@@ -52,6 +52,7 @@ function verify_csrf(): void {
         // AJAX callers (add to cart) get JSON so the script can show the
         // message instead of falling back to a full-page reload.
         if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') {
+            while (ob_get_level() > 0) ob_end_clean();
             http_response_code(403); header('Content-Type: application/json');
             echo json_encode(['ok' => false, 'message' => 'Session expired — refresh the page and try again.']);
             exit;

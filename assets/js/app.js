@@ -35,7 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .then((res) => res.json().catch(() => null).then((data) => ({ res, data })))
       .then(({ res, data }) => {
         btn.disabled = false;
-        if (!data || !data.ok) { showToast((data && data.message) || 'Could not add that item.'); return; }
+        if (!data || !data.ok) {
+          // Expired session: the only remedy is a fresh page (fresh token),
+          // so refresh instead of leaving a dead toast behind.
+          if (res.status === 403) { showToast('Session expired — refreshing the page…'); setTimeout(() => location.reload(), 1200); return; }
+          showToast((data && data.message) || ('Could not add that item. (HTTP ' + res.status + ')')); return;
+        }
         const count = document.querySelector('.cart-count');
         if (count) count.textContent = data.count;
         const fabCount = document.querySelector('.cart-fab-menu a span');

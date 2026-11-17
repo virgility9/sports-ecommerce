@@ -1,9 +1,13 @@
 <?php
+// Buffer all output: a stray PHP warning/notice (XAMPP shows them inline)
+// must never reach the browser ahead of the JSON replies below, or the
+// script's res.json() fails and add to cart reports "Could not add".
+ob_start();
 require_once __DIR__ . '/includes/bootstrap.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf(); $action = $_POST['action'] ?? ''; $id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
     $ajax = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest';
-    $json = function (array $data, int $code = 200): void { http_response_code($code); header('Content-Type: application/json'); echo json_encode($data); exit; };
+    $json = function (array $data, int $code = 200): void { while (ob_get_level() > 0) ob_end_clean(); http_response_code($code); header('Content-Type: application/json'); echo json_encode($data); exit; };
     if ($action === 'clear') { $_SESSION['cart'] = []; flash('Your cart is now empty.'); header('Location: ' . app_url('/cart.php')); exit; }
     $stmt = $pdo->prepare('SELECT id, stock FROM products WHERE id = ?'); $stmt->execute([$id ?: 0]); $product = $stmt->fetch();
     if (!$product) { if ($ajax) $json(['ok' => false, 'message' => 'That product is no longer available.'], 404); flash('That product is no longer available.'); header('Location: ' . app_url('/cart.php')); exit; }

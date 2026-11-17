@@ -19,6 +19,8 @@ $stmt = $pdo->prepare($sql); $stmt->execute($params); $products = $stmt->fetchAl
 $featured = array_values(array_filter($products, fn($product) => (int) $product['featured'] === 1));
 $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
 ?>
+<section class="ticker" aria-hidden="true"><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div></section>
+
 <section class="hero"><div class="hero-inner">
   <div class="hero-image-overlay"></div>
   <div class="hero-copy">
@@ -37,7 +39,6 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
   </div>
 </div></section>
 
-<section class="ticker" aria-hidden="true"><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div></section>
 
 <section class="perks">
   <div class="perk"><span class="perk-ic">🚚</span><div><b>Free shipping over ₱6,300</b><p>Fast delivery, tracked from our door to yours.</p></div></div>
