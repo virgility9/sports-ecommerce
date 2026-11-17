@@ -13,13 +13,14 @@ $currentSearch = trim($_GET['q'] ?? '');
   <title><?= e($title) ?></title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="<?= e(app_url('assets/img/logo-mark.svg')) ?>">
   <link rel="stylesheet" href="<?= e(app_url('assets/css/style.css')) ?>">
 </head>
 <body>
 <div class="announcement">FREE SHIPPING ON ORDERS OVER $100 <span>✳</span> 30-DAY EASY RETURNS <span>✳</span> <a href="<?= e(app_url('#shop')) ?>">SHOP NEW DROPS</a></div>
 <header class="site-header" id="siteHeader">
   <button class="icon-btn menu-btn" type="button" aria-label="Open menu" aria-expanded="false" data-menu-btn>☰</button>
-  <a class="brand" href="<?= e(app_url('')) ?>">RALLY<span>®</span></a>
+  <a class="brand" href="<?= e(app_url('')) ?>"><img class="brand-mark" src="<?= e(app_url('assets/img/logo-mark.svg')) ?>" alt="" width="34" height="34">RALLY<span>®</span></a>
   <nav class="main-nav" data-main-nav aria-label="Main navigation">
     <a href="<?= e(app_url('#shop')) ?>" class="<?= $currentCategory === '' && $currentSearch === '' ? 'active' : '' ?>">Shop all</a>
     <a href="<?= e(app_url('?category=Running#shop')) ?>" class="<?= $currentCategory === 'Running' ? 'active' : '' ?>">Running</a>

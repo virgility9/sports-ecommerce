@@ -2,7 +2,7 @@
 <footer class="site-footer">
   <div class="footer-top">
     <div>
-      <a class="brand" href="<?= e(app_url('')) ?>">RALLY<span>®</span></a>
+      <a class="brand" href="<?= e(app_url('')) ?>"><img class="brand-mark" src="<?= e(app_url('assets/img/logo-mark.svg')) ?>" alt="" width="34" height="34">RALLY<span>®</span></a>
       <p style="margin-top:14px">Made for movement. Designed for wherever you’re headed — the miles, the reps, and everything after.</p>
     </div>
     <div>

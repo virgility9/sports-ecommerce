@@ -28,7 +28,8 @@ button{cursor:pointer}
 .announcement a{color:var(--lime);text-decoration:underline;text-underline-offset:3px}
 .site-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:28px;height:72px;padding:0 max(20px,calc((100vw - var(--max))/2));background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .site-header.scrolled{box-shadow:var(--shadow-sm)}
-.brand{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.07em;line-height:1;flex-shrink:0}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.07em;line-height:1;flex-shrink:0}
+.brand-mark{width:34px;height:34px;flex-shrink:0;display:block}
 .brand span{font-size:9px;vertical-align:top;letter-spacing:0;margin-left:2px}
 .brand em{font-style:normal;color:var(--ink)}
 .main-nav{display:flex;gap:4px}
