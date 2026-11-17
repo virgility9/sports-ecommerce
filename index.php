@@ -68,7 +68,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
     </div>
     <div class="shop-meta">
       <span><?= count($products) ?> item<?= count($products) === 1 ? '' : 's' ?></span>
-      <select name="sort" aria-label="Sort products" onchange="this.form.submit()">
+      <select name="sort" aria-label="Sort products">
         <option value="featured" <?= $sort === 'featured' ? 'selected' : '' ?>>Featured</option>
         <option value="newest" <?= $sort === 'newest' ? 'selected' : '' ?>>Newest</option>
         <option value="discount" <?= $sort === 'discount' ? 'selected' : '' ?>>Biggest discount</option>
@@ -78,7 +78,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
       </select>
     </div>
   </form>
-  <?php if ($search !== ''): ?><p style="margin:0 0 18px;color:var(--muted);font-size:13.5px">Results for “<strong style="color:var(--ink)"><?= e($search) ?></strong>” — <a href="<?= e(app_url('#shop')) ?>" style="text-decoration:underline">clear search</a></p><?php endif; ?>
+  <?php if ($search !== ''): ?><p data-search-note style="margin:0 0 18px;color:var(--muted);font-size:13.5px">Results for “<strong style="color:var(--ink)"><?= e($search) ?></strong>” — <a href="<?= e(app_url('#shop')) ?>" style="text-decoration:underline">clear search</a></p><?php endif; ?>
   <div class="product-grid">
   <?php foreach ($products as $i => $product): ?><article class="product-card">
     <div class="product-image-wrap">
@@ -96,7 +96,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<?php if ($featured): ?><section class="section-wrap" style="padding-top:0">
+<?php if ($featured): ?><section class="section-wrap" id="featured-strip" style="padding-top:0">
   <div class="section-head-row"><div><span class="eyebrow">RALLY PICKS</span><h2>Most loved right now.</h2></div><a class="link-arrow" href="#shop">Shop all →</a></div>
   <div class="featured-strip">
     <a class="feature-card" href="<?= e(app_url('product.php?id=' . (int) $featured[0]['id'])) ?>"><img src="<?= e($featured[0]['image_url']) ?>" alt="<?= e($featured[0]['name']) ?>" loading="lazy"><div><span class="eyebrow" style="color:#fff">★ BESTSELLER</span><h3><?= e($featured[0]['name']) ?></h3><p><?= e($featured[0]['description']) ?></p><span class="button button-accent">Shop now — <?= money($featured[0]['price']) ?></span></div></a>

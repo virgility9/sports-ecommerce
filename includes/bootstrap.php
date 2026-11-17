@@ -47,6 +47,13 @@ function sale_pct(array $product): int { $compare = (float) ($product['compare_p
 function csrf_token(): string { if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32)); return $_SESSION['csrf']; }
 function verify_csrf(): void {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !hash_equals($_SESSION['csrf'] ?? '', $_POST['csrf'] ?? '')) {
+        // AJAX callers (add to cart) get JSON so the script can show the
+        // message instead of falling back to a full-page reload.
+        if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') {
+            http_response_code(403); header('Content-Type: application/json');
+            echo json_encode(['ok' => false, 'message' => 'Session expired — refresh the page and try again.']);
+            exit;
+        }
         http_response_code(403); exit('Invalid request token. Go back and try again.');
     }
 }
