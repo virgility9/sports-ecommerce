@@ -26,6 +26,7 @@ $currentSearch = trim($_GET['q'] ?? '');
     <a href="<?= e(app_url('?category=Running#shop')) ?>" class="<?= $currentCategory === 'Running' ? 'active' : '' ?>">Running</a>
     <a href="<?= e(app_url('?category=Training#shop')) ?>" class="<?= $currentCategory === 'Training' ? 'active' : '' ?>">Training</a>
     <a href="<?= e(app_url('?category=Outerwear#shop')) ?>" class="<?= $currentCategory === 'Outerwear' ? 'active' : '' ?>">Outerwear</a>
+    <?php if (current_user() && current_user()['role'] === 'admin'): ?><a class="nav-admin-link" href="<?= e(app_url('admin/')) ?>">Admin dashboard</a><?php endif; ?>
   </nav>
   <div class="header-search">
     <form action="<?= e(app_url('')) ?>" method="get" role="search">
