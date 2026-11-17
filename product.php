@@ -1,0 +1,9 @@
+<?php
+require_once __DIR__ . '/includes/bootstrap.php';
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$stmt = $pdo->prepare('SELECT * FROM products WHERE id = ?'); $stmt->execute([$id ?: 0]); $product = $stmt->fetch();
+if (!$product) { http_response_code(404); $title = 'Product not found'; require __DIR__ . '/includes/header.php'; echo '<section class="section-wrap empty-state">That piece is not here. <a href="/">Back to the collection</a></section>'; require __DIR__ . '/includes/footer.php'; exit; }
+$title = $product['name'] . ' — Rally'; require __DIR__ . '/includes/header.php';
+?>
+<section class="product-detail section-wrap"><div class="detail-image"><img src="<?= e($product['image_url']) ?>" alt="<?= e($product['name']) ?>"></div><div class="detail-copy"><a class="back-link" href="/">← Back to collection</a><span class="eyebrow"><?= e(strtoupper($product['category'])) ?> / RALLY ESSENTIALS</span><h1><?= e($product['name']) ?></h1><div class="detail-price"><?= money($product['price']) ?></div><p><?= e($product['description']) ?></p><div class="stock-note"><span class="note-dot"></span><?= (int) $product['stock'] < 5 ? 'Only a few left' : 'In stock and ready to move' ?></div><form action="/cart-action.php" method="post" class="detail-form"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>"><input type="hidden" name="action" value="add"><label>Quantity <input type="number" name="quantity" value="1" min="1" max="<?= max(1, (int) $product['stock']) ?>"></label><button class="button button-dark" type="submit">Add to bag <span>↗</span></button></form><div class="detail-perks"><div>✳ Thoughtful performance</div><div>✳ Free shipping over $100</div><div>✳ Easy 30-day returns</div></div></div></section>
+<?php require __DIR__ . '/includes/footer.php'; ?>
