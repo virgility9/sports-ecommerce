@@ -37,7 +37,13 @@ $currentSearch = trim($_GET['q'] ?? '');
   <div class="header-actions">
     <?php if (current_user()): ?><a class="account-link" href="<?= e(app_url('orders.php')) ?>">Hi, <?= e(explode(' ', current_user()['name'])[0]) ?></a><?php else: ?><a class="account-link" href="<?= e(app_url('login.php')) ?>">Sign in</a><?php endif; ?>
     <?php if (current_user() && current_user()['role'] === 'admin'): ?><a class="account-link" href="<?= e(app_url('admin/')) ?>">Admin</a><?php endif; ?>
-    <a class="cart-link" href="<?= e(app_url('cart.php')) ?>" aria-label="View bag">🛍 Bag <span><?= cart_count() ?></span></a>
+    <div class="cart-menu" data-cart-menu>
+      <button class="cart-menu-btn" type="button" aria-label="Cart menu" aria-expanded="false" aria-haspopup="true" data-cart-menu-btn><span class="cart-menu-ic">☰</span><span class="cart-menu-cart">🛒</span><span class="cart-count"><?= cart_count() ?></span></button>
+      <div class="cart-dropdown" role="menu" aria-label="Cart menu">
+        <a href="<?= e(app_url('cart.php')) ?>" role="menuitem">🛒 View cart <span><?= cart_count() ?> item<?= cart_count() === 1 ? '' : 's' ?></span></a>
+        <a href="<?= e(app_url('orders.php')) ?>" role="menuitem">📋 Order history</a>
+      </div>
+    </div>
     <?php if (current_user()): ?><form action="<?= e(app_url('logout.php')) ?>" method="post" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><button class="text-button" type="submit">Log out</button></form><?php endif; ?>
   </div>
 </header>

@@ -28,7 +28,7 @@ $title = $product['name'] . ' — Rally'; require __DIR__ . '/includes/header.ph
       <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
       <input type="hidden" name="action" value="add">
       <div class="qty-stepper" data-stepper><button type="button" data-step="-1" aria-label="Decrease quantity">−</button><input type="number" name="quantity" value="1" min="1" max="<?= max(1, (int) $product['stock']) ?>" aria-label="Quantity"><button type="button" data-step="1" aria-label="Increase quantity">+</button></div>
-      <button class="button button-dark" type="submit" data-quick-add>Add to bag <span>↗</span></button>
+      <button class="button button-dark" type="submit" data-quick-add>Add to cart <span>↗</span></button>
     </form>
     <button class="button button-light full-button" type="button" data-wishlist="<?= (int) $product['id'] ?>" style="margin-top:12px">♡ Save to wishlist</button>
 

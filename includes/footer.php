@@ -18,7 +18,7 @@
       <h4>Help</h4>
       <ul>
         <li><a href="<?= e(app_url('orders.php')) ?>">Track my order</a></li>
-        <li><a href="<?= e(app_url('cart.php')) ?>">My bag</a></li>
+        <li><a href="<?= e(app_url('cart.php')) ?>">My cart</a></li>
         <li><a href="<?= e(app_url('login.php')) ?>">Sign in</a></li>
         <li><a href="<?= e(app_url('register.php')) ?>">Create account</a></li>
       </ul>

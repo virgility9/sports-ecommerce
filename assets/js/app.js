@@ -23,6 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
   }
 
+  // Cart menu (header pill): ☰ + 🛒 opens View cart / Order history.
+  const cartMenu = document.querySelector('[data-cart-menu]');
+  const cartMenuBtn = document.querySelector('[data-cart-menu-btn]');
+  if (cartMenu && cartMenuBtn) {
+    cartMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = cartMenu.classList.toggle('open');
+      cartMenuBtn.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', (e) => {
+      if (!cartMenu.contains(e.target)) { cartMenu.classList.remove('open'); cartMenuBtn.setAttribute('aria-expanded', 'false'); }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { cartMenu.classList.remove('open'); cartMenuBtn.setAttribute('aria-expanded', 'false'); }
+    });
+    cartMenu.querySelectorAll('.cart-dropdown a').forEach((a) => a.addEventListener('click', () => {
+      cartMenu.classList.remove('open'); cartMenuBtn.setAttribute('aria-expanded', 'false');
+    }));
+  }
+
   // Toast helper (footer has #toast).
   const toast = document.getElementById('toast');
   let toastTimer;
@@ -81,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Quick add without a page reload: post in the background, then update
-  // the bag count and toast. Falls back to a normal submit if anything fails.
+  // the cart count and toast. Falls back to a normal submit if anything fails.
   document.querySelectorAll('form').forEach((form) => {
     const btn = form.querySelector('[data-quick-add]');
     if (!btn) return;
@@ -93,9 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((data) => {
           btn.disabled = false;
           if (!data.ok) { showToast(data.message || 'Could not add that item.'); return; }
-          const count = document.querySelector('.cart-link span');
+          const count = document.querySelector('.cart-count');
           if (count) count.textContent = data.count;
-          showToast('<b>Added to your bag.</b>');
+          showToast('<b>Added to your cart.</b>');
           btn.classList.add('added');
           setTimeout(() => btn.classList.remove('added'), 1800);
         })

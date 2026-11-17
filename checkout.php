@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php'; require_login();
 $items = cart_products();
-if (!$items) { flash('Your bag is empty. Add something before checking out.'); header('Location: ' . app_url('/cart.php')); exit; }
+if (!$items) { flash('Your cart is empty. Add something before checking out.'); header('Location: ' . app_url('/cart.php')); exit; }
 $subtotal = cart_total($items); $shipping = $subtotal >= 100 ? 0 : 7; $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf(); $recipient = trim($_POST['recipient_name'] ?? ''); $address = trim($_POST['address'] ?? ''); $city = trim($_POST['city'] ?? ''); $postal = trim($_POST['postal_code'] ?? '');
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo->beginTransaction(); $total = 0; $locked = [];
             $lock = $pdo->prepare('SELECT id, name, price, stock FROM products WHERE id = ? FOR UPDATE');
-            foreach ($items as $item) { $lock->execute([$item['id']]); $fresh = $lock->fetch(); if (!$fresh || $fresh['stock'] < $item['quantity']) throw new RuntimeException('An item in your bag no longer has enough stock. Please review your bag.'); $fresh['quantity'] = $item['quantity']; $total += (float) $fresh['price'] * $fresh['quantity']; $locked[] = $fresh; }
+            foreach ($items as $item) { $lock->execute([$item['id']]); $fresh = $lock->fetch(); if (!$fresh || $fresh['stock'] < $item['quantity']) throw new RuntimeException('An item in your cart no longer has enough stock. Please review your cart.'); $fresh['quantity'] = $item['quantity']; $total += (float) $fresh['price'] * $fresh['quantity']; $locked[] = $fresh; }
             $total += ($total >= 100 ? 0 : 7);
             $stmt = $pdo->prepare('INSERT INTO orders (user_id, total, recipient_name, address, city, postal_code) VALUES (?, ?, ?, ?, ?, ?)'); $stmt->execute([current_user()['id'], $total, $recipient, $address, $city, $postal]); $orderId = (int) $pdo->lastInsertId();
             $insert = $pdo->prepare('INSERT INTO order_items (order_id, product_id, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)'); $update = $pdo->prepare('UPDATE products SET stock = stock - ? WHERE id = ?');
