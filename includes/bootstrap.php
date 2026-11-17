@@ -40,7 +40,9 @@ function back_url(): string {
 require_once __DIR__ . '/database.php';
 
 function e(?string $value): string { return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
-function money(float|string $amount): string { global $config; return '$' . number_format((float) $amount, 2); }
+// Display currency: prices are stored in USD and shown in ₱ at ₱63 per $1.
+const USD_TO_PHP = 63;
+function money(float|string $amount): string { global $config; return '₱' . number_format((float) $amount * USD_TO_PHP, 2); }
 // Sale discount percent (0 when not on sale). compare_price is the optional
 // "was" price; NULL/absent means full price. Safe before the column exists.
 function sale_pct(array $product): int { $compare = (float) ($product['compare_price'] ?? 0); $price = (float) $product['price']; return ($compare > $price && $compare > 0) ? (int) round((1 - $price / $compare) * 100) : 0; }

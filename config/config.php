@@ -8,5 +8,5 @@ return [
     'db_name' => getenv('DB_NAME') ?: 'sports_ecommerce',
     'db_user' => getenv('DB_USER') ?: 'root',
     'db_pass' => getenv('DB_PASS') ?: '',
-    'currency' => getenv('APP_CURRENCY') ?: 'USD',
+    'currency' => getenv('APP_CURRENCY') ?: 'PHP',
 ];

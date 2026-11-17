@@ -2,7 +2,7 @@
 <footer class="site-footer">
   <div class="footer-top">
     <div>
-      <a class="brand" href="<?= e(app_url('')) ?>"><img class="brand-mark" src="<?= e(app_url('assets/img/logo-mark.svg')) ?>" alt="" width="34" height="34">RALLY<span>®</span></a>
+      <a class="brand" href="<?= e(app_url('')) ?>"><img class="brand-lockup" src="<?= e(app_url('assets/img/logo-light.svg')) ?>" alt="RALLY" width="151" height="34"></a>
       <p style="margin-top:14px">Made for movement. Designed for wherever you’re headed — the miles, the reps, and everything after.</p>
     </div>
     <div>
@@ -32,7 +32,7 @@
       </form>
     </div>
   </div>
-  <div class="footer-bottom"><div class="footer-bottom-inner"><span>© <?= date('Y') ?> Rally Sportswear — Move your own way.</span><span>Free shipping over $100 · 30-day returns · Pay on delivery</span></div></div>
+  <div class="footer-bottom"><div class="footer-bottom-inner"><span>© <?= date('Y') ?> Rally Sportswear — Move your own way.</span><span>Free shipping over ₱6,300 · 30-day returns · Pay on delivery</span></div></div>
 </footer>
 <div class="cart-fab" data-cart-fab>
   <div class="cart-fab-menu" role="menu" aria-label="Cart menu">

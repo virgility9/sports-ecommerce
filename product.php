@@ -33,14 +33,14 @@ $title = $product['name'] . ' — Rally'; require __DIR__ . '/includes/header.ph
     <button class="button button-light full-button" type="button" data-wishlist="<?= (int) $product['id'] ?>" style="margin-top:12px">♡ Save to wishlist</button>
 
     <div class="detail-perks">
-      <div>🚚 Free shipping on orders over $100</div>
+      <div>🚚 Free shipping on orders over ₱6,300</div>
       <div>↩️ Easy 30-day returns</div>
       <div>✳ Thoughtful performance — breathable, sweat-wicking fabric</div>
     </div>
 
     <div class="accordion">
       <details open><summary>Details &amp; fit <span>+</span></summary><p><?= e($product['description']) ?> Designed for a regular, athletic fit — true to size. Model is 6'0" and wears size M.</p></details>
-      <details><summary>Shipping &amp; returns <span>+</span></summary><p>Orders ship in 1–2 business days. Free shipping over $100, otherwise $7. Returns are free within 30 days.</p></details>
+      <details><summary>Shipping &amp; returns <span>+</span></summary><p>Orders ship in 1–2 business days. Free shipping over ₱6,300, otherwise ₱441. Returns are free within 30 days.</p></details>
       <details><summary>Care <span>+</span></summary><p>Machine wash cold, hang dry. Do not bleach or iron directly on prints.</p></details>
     </div>
   </div>

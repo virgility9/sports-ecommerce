@@ -13,7 +13,7 @@ Requirements: PHP 8.2+ with `pdo_mysql`, MySQL 8+, and a web server (or PHP's bu
    - `DB_NAME` (default `sports_ecommerce`)
    - `DB_USER` (default `root`)
    - `DB_PASS` (default empty)
-   - `APP_CURRENCY` (default `USD`)
+   - `APP_CURRENCY` (default `PHP` — prices are stored in USD and display in ₱ at ₱63 per $1)
 3. From the project root, run `php scripts/create-admin.php admin@example.com 'Choose-a-strong-password'` to create an administrator. The script refuses to overwrite an existing account.
 4. Start the server with `php -S 127.0.0.1:8000` and visit http://127.0.0.1:8000.
 

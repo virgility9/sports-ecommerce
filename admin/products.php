@@ -20,11 +20,11 @@ $title = 'Products — Rally admin'; require __DIR__ . '/../includes/header.php'
     </div>
     <label>Description<textarea name="description" required rows="3"><?= e($edit['description'] ?? '') ?></textarea></label>
     <div class="form-columns">
-      <label>Price (USD)<input name="price" type="number" min="0.01" step="0.01" required value="<?= e(isset($edit['price']) ? (string) $edit['price'] : '') ?>"></label>
+      <label>Price (USD — shown in ₱)<input name="price" type="number" min="0.01" step="0.01" required value="<?= e(isset($edit['price']) ? (string) $edit['price'] : '') ?>"></label>
       <label>Stock<input name="stock" type="number" min="0" required value="<?= e(isset($edit['stock']) ? (string) $edit['stock'] : '') ?>"></label>
     </div>
     <div class="form-columns">
-      <label>Was price (USD, optional)<input name="compare_price" type="number" min="0.01" step="0.01" placeholder="Leave empty for full price" value="<?= e(isset($edit['compare_price']) && $edit['compare_price'] !== null ? (string) $edit['compare_price'] : '') ?>"><small style="font-weight:400;color:var(--muted)">Higher than the price = sale badge with −% off on the card. Run database/add-compare-price.sql first.</small></label>
+      <label>Was price (USD — shown in ₱, optional)<input name="compare_price" type="number" min="0.01" step="0.01" placeholder="Leave empty for full price" value="<?= e(isset($edit['compare_price']) && $edit['compare_price'] !== null ? (string) $edit['compare_price'] : '') ?>"><small style="font-weight:400;color:var(--muted)">Higher than the price = sale badge with −% off on the card. Run database/add-compare-price.sql first.</small></label>
       <span></span>
     </div>
     <label>Image URL<input name="image_url" type="url" placeholder="https://..." value="<?= e($edit['image_url'] ?? '') ?>"></label>

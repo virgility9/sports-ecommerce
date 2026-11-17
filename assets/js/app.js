@@ -89,7 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (qvOverlay) {
     const q = (sel) => qvOverlay.querySelector(sel);
     const qvForm = q('[data-qv-form]');
-    const money = (n) => '$' + Number(n).toFixed(2);
+    // Prices in data attributes are USD; shown in ₱ at ₱63 per $1.
+    const money = (n) => '₱' + (Number(n) * 63).toFixed(2);
     const openQv = (btn) => {
       const d = btn.dataset;
       const price = parseFloat(d.price || '0');

@@ -32,7 +32,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
     <div class="hero-stats">
       <div><strong><?= count($products) ?></strong><span>Products</span></div>
       <div><strong>4.9 ★</strong><span>Avg. rating</span></div>
-      <div><strong>Free</strong><span>Shipping $100+</span></div>
+      <div><strong>Free</strong><span>Shipping ₱6,300+</span></div>
     </div>
   </div>
 </div></section>
@@ -40,7 +40,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
 <section class="ticker" aria-hidden="true"><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div></section>
 
 <section class="perks">
-  <div class="perk"><span class="perk-ic">🚚</span><div><b>Free shipping over $100</b><p>Fast delivery, tracked from our door to yours.</p></div></div>
+  <div class="perk"><span class="perk-ic">🚚</span><div><b>Free shipping over ₱6,300</b><p>Fast delivery, tracked from our door to yours.</p></div></div>
   <div class="perk"><span class="perk-ic">↩️</span><div><b>30-day easy returns</b><p>Didn’t fit? Send it back, no questions asked.</p></div></div>
   <div class="perk"><span class="perk-ic">💳</span><div><b>Pay on delivery</b><p>Pay when your order arrives. Simple and safe.</p></div></div>
   <div class="perk"><span class="perk-ic">✳</span><div><b>Built to perform</b><p>Breathable, sweat-wicking fabrics that move with you.</p></div></div>

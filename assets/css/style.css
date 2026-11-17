@@ -31,6 +31,8 @@ button{cursor:pointer}
 .site-header.scrolled{box-shadow:var(--shadow-sm)}
 .brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.07em;line-height:1;flex-shrink:0}
 .brand-mark{width:34px;height:34px;flex-shrink:0;display:block}
+.brand-lockup{height:34px;width:auto;flex-shrink:0;display:block}
+.footer-top .brand-lockup{height:36px}
 .brand span{font-size:9px;vertical-align:top;letter-spacing:0;margin-left:2px}
 .brand em{font-style:normal;color:#f2f3f2}
 .main-nav{display:flex;gap:4px}
