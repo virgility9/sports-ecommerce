@@ -252,6 +252,14 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
 .auth-card>p{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 26px}
 .form-stack{display:grid;gap:16px}
 .form-stack .button{margin-top:6px;width:100%}
+.password-field{display:block;position:relative}
+.password-field input{padding-right:48px}
+.password-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:36px;height:36px;display:grid;place-items:center;border:0;background:transparent;color:var(--muted);cursor:pointer;border-radius:10px}
+.password-toggle:hover{color:var(--ink);background:var(--paper)}
+.password-toggle svg{width:20px;height:20px}
+.password-toggle .icon-eye-off{display:none}
+.password-toggle.is-visible .icon-eye{display:none}
+.password-toggle.is-visible .icon-eye-off{display:block}
 .auth-switch{font-size:13px!important;text-align:center;margin:24px 0 0!important;color:var(--muted)}
 .auth-switch a{font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 

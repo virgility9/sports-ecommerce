@@ -45,6 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Show/hide password.
+  document.querySelectorAll('.password-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const input = btn.parentElement.querySelector('input');
+      if (!input) return;
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.classList.toggle('is-visible', show);
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    });
+  });
+
   // Size selector (visual only — size is not stored server-side yet).
   document.querySelectorAll('.size-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
