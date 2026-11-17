@@ -2,20 +2,102 @@
 require_once __DIR__ . '/includes/bootstrap.php';
 $category = trim($_GET['category'] ?? '');
 $search = trim($_GET['q'] ?? '');
+$sort = $_GET['sort'] ?? 'featured';
+$sortSql = match ($sort) {
+    'price-asc' => 'price ASC',
+    'price-desc' => 'price DESC',
+    'newest' => 'created_at DESC',
+    'name' => 'name ASC',
+    default => 'featured DESC, created_at DESC',
+};
 $sql = 'SELECT * FROM products WHERE stock > 0'; $params = [];
 if ($category !== '') { $sql .= ' AND category = ?'; $params[] = $category; }
 if ($search !== '') { $sql .= ' AND (name LIKE ? OR description LIKE ?)'; $params[] = '%' . $search . '%'; $params[] = '%' . $search . '%'; }
-$sql .= ' ORDER BY featured DESC, created_at DESC';
+$sql .= ' ORDER BY ' . $sortSql;
 $stmt = $pdo->prepare($sql); $stmt->execute($params); $products = $stmt->fetchAll();
-$featured = array_filter($products, fn($product) => (int) $product['featured'] === 1);
+$featured = array_values(array_filter($products, fn($product) => (int) $product['featured'] === 1));
 $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
 ?>
-<section class="hero"><div class="hero-copy"><span class="eyebrow">GEAR UP. GET OUT THERE.</span><h1>Made to<br><em>move you.</em></h1><p>Performance essentials for the miles, reps, and moments that make you.</p><a href="#shop" class="button button-dark">Shop the collection <span>↘</span></a><div class="hero-note"><span class="note-dot"></span> PERFORMANCE, WITHOUT THE NOISE</div></div><div class="hero-image"><div class="hero-image-overlay"></div><span class="image-label">SPRING / SUMMER 26</span><div class="hero-sticker">FIND<br>YOUR<br>PACE<span>✳</span></div></div><div class="hero-index">01 — 03</div></section>
-<section class="ticker"><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span></div></section>
-<section class="collection section-wrap" id="shop"><div class="section-heading"><div><span class="eyebrow">THE RALLY COLLECTION</span><h2>Find your <em>uniform.</em></h2></div><p>Considered essentials. No distractions.<br>Just you and the next thing.</p></div>
-<form class="shop-tools" action="/" method="get"><div class="category-tabs"><a class="<?= $category === '' ? 'active' : '' ?>" href="/#shop">All gear</a><a class="<?= $category === 'Running' ? 'active' : '' ?>" href="/?category=Running#shop">Running</a><a class="<?= $category === 'Training' ? 'active' : '' ?>" href="/?category=Training#shop">Training</a><a class="<?= $category === 'Outerwear' ? 'active' : '' ?>" href="/?category=Outerwear#shop">Outerwear</a></div><div class="search-box"><input type="search" name="q" placeholder="Search gear" value="<?= e($search) ?>"><button aria-label="Search">⌕</button></div></form>
-<div class="product-grid">
-<?php foreach ($products as $i => $product): ?><article class="product-card"><a class="product-image" href="/product.php?id=<?= (int) $product['id'] ?>"><img src="<?= e($product['image_url']) ?>" alt="<?= e($product['name']) ?>" loading="lazy"><span class="product-tag"><?= (int) $product['featured'] ? 'RALLY PICK' : e(strtoupper($product['category'])) ?></span></a><div class="product-info"><div><a class="product-name" href="/product.php?id=<?= (int) $product['id'] ?>"><?= e($product['name']) ?></a><span class="product-category"><?= e($product['category']) ?></span></div><span class="price"><?= money($product['price']) ?></span></div><form action="/cart-action.php" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit">Quick add <span>+</span></button></form></article><?php endforeach; ?>
-<?php if (!$products): ?><div class="empty-state">No gear found. Try another search or category.</div><?php endif; ?></div></section>
-<section class="manifesto"><div class="manifesto-mark">R.</div><div><span class="eyebrow">WHY WE RALLY</span><h2>Progress isn’t<br>a straight line.</h2><p>It’s showing up, finding your rhythm, and moving in a way that feels like yours. We make the gear. You make it matter.</p><a href="#shop" class="arrow-link">Find your next move <span>↗</span></a></div><span class="manifesto-side">KEEP SHOWING UP · KEEP SHOWING UP ·</span></section>
+<section class="hero"><div class="hero-inner">
+  <div class="hero-copy">
+    <span class="eyebrow">GEAR UP. GET OUT THERE.</span>
+    <h1>Made to<br><em>move you.</em></h1>
+    <p>Performance essentials for the miles, reps, and moments that make you. Lightweight, breathable, built to last.</p>
+    <div class="hero-cta">
+      <a href="#shop" class="button button-lime">Shop the collection <span>↘</span></a>
+      <a href="/?category=Running#shop" class="button button-light">Shop running</a>
+    </div>
+    <div class="hero-stats">
+      <div><strong>8+</strong><span>Core styles</span></div>
+      <div><strong>4.9 ★</strong><span>Avg. rating</span></div>
+      <div><strong>Free</strong><span>Shipping $100+</span></div>
+    </div>
+  </div>
+  <div class="hero-image"><div class="hero-image-overlay"></div><span class="image-label">SPRING / SUMMER 26</span><div class="hero-sticker">FIND<br>YOUR<br>PACE<span>✳</span></div><span class="hero-index">01 — 03</span></div>
+</div></section>
+
+<section class="ticker" aria-hidden="true"><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div></section>
+
+<section class="perks">
+  <div class="perk"><span class="perk-ic">🚚</span><div><b>Free shipping over $100</b><p>Fast delivery, tracked from our door to yours.</p></div></div>
+  <div class="perk"><span class="perk-ic">↩️</span><div><b>30-day easy returns</b><p>Didn’t fit? Send it back, no questions asked.</p></div></div>
+  <div class="perk"><span class="perk-ic">💳</span><div><b>Pay on delivery</b><p>Pay when your order arrives. Simple and safe.</p></div></div>
+  <div class="perk"><span class="perk-ic">✳</span><div><b>Built to perform</b><p>Breathable, sweat-wicking fabrics that move with you.</p></div></div>
+</section>
+
+<section class="section-wrap" style="padding-bottom:0">
+  <div class="section-head-row"><div><span class="eyebrow">SHOP BY SPORT</span><h2>Find your lane.</h2></div><a class="link-arrow" href="#shop">View all gear →</a></div>
+  <div class="cat-grid">
+    <a class="cat-card" href="/?category=Running#shop"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80" alt="Running gear" loading="lazy"><div><strong>Running</strong><span>Shorts, leggings &amp; tops</span></div><span class="cat-cta">↗</span></a>
+    <a class="cat-card" href="/?category=Training#shop"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80" alt="Training gear" loading="lazy"><div><strong>Training</strong><span>Tees, tanks &amp; bras</span></div><span class="cat-cta">↗</span></a>
+    <a class="cat-card" href="/?category=Outerwear#shop"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=80" alt="Outerwear" loading="lazy"><div><strong>Outerwear</strong><span>Hoodies &amp; jackets</span></div><span class="cat-cta">↗</span></a>
+  </div>
+</section>
+
+<section class="section-wrap" id="shop">
+  <div class="section-heading"><div><span class="eyebrow">THE RALLY COLLECTION</span><h2>Find your <em>uniform.</em></h2></div><p>Considered essentials. No distractions.<br>Just you and the next thing.</p></div>
+  <form class="shop-tools" action="/" method="get">
+    <?php if ($search !== ''): ?><input type="hidden" name="q" value="<?= e($search) ?>"><?php endif; ?>
+    <?php if ($category !== ''): ?><input type="hidden" name="category" value="<?= e($category) ?>"><?php endif; ?>
+    <div class="category-tabs">
+      <a class="<?= $category === '' ? 'active' : '' ?>" href="/?sort=<?= e($sort) ?>#shop">All gear</a>
+      <a class="<?= $category === 'Running' ? 'active' : '' ?>" href="/?category=Running&amp;sort=<?= e($sort) ?>#shop">Running</a>
+      <a class="<?= $category === 'Training' ? 'active' : '' ?>" href="/?category=Training&amp;sort=<?= e($sort) ?>#shop">Training</a>
+      <a class="<?= $category === 'Outerwear' ? 'active' : '' ?>" href="/?category=Outerwear&amp;sort=<?= e($sort) ?>#shop">Outerwear</a>
+    </div>
+    <div class="shop-meta">
+      <span><?= count($products) ?> item<?= count($products) === 1 ? '' : 's' ?></span>
+      <select name="sort" aria-label="Sort products" onchange="this.form.submit()">
+        <option value="featured" <?= $sort === 'featured' ? 'selected' : '' ?>>Featured</option>
+        <option value="newest" <?= $sort === 'newest' ? 'selected' : '' ?>>Newest</option>
+        <option value="price-asc" <?= $sort === 'price-asc' ? 'selected' : '' ?>>Price: low to high</option>
+        <option value="price-desc" <?= $sort === 'price-desc' ? 'selected' : '' ?>>Price: high to low</option>
+        <option value="name" <?= $sort === 'name' ? 'selected' : '' ?>>Name A–Z</option>
+      </select>
+    </div>
+  </form>
+  <?php if ($search !== ''): ?><p style="margin:0 0 18px;color:var(--muted);font-size:13.5px">Results for “<strong style="color:var(--ink)"><?= e($search) ?></strong>” — <a href="/#shop" style="text-decoration:underline">clear search</a></p><?php endif; ?>
+  <div class="product-grid">
+  <?php foreach ($products as $i => $product): ?><article class="product-card">
+    <a class="product-image" href="/product.php?id=<?= (int) $product['id'] ?>">
+      <img src="<?= e($product['image_url']) ?>" alt="<?= e($product['name']) ?>" loading="lazy">
+      <span class="product-tag <?= (int) $product['featured'] ? 'hot' : '' ?>"><?= (int) $product['featured'] ? '★ RALLY PICK' : e(strtoupper($product['category'])) ?></span>
+    </a>
+    <button class="wish-btn" type="button" aria-label="Save <?= e($product['name']) ?> to wishlist" data-wishlist="<?= (int) $product['id'] ?>">♡</button>
+    <div class="product-info"><div><a class="product-name" href="/product.php?id=<?= (int) $product['id'] ?>"><?= e($product['name']) ?></a><span class="product-category"><?= e($product['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 18 + ($i * 7) % 120 ?> reviews</div></div><span class="price"><?= money($product['price']) ?></span></div>
+    <form action="/cart-action.php" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Quick add <span>+</span></button></form>
+  </article><?php endforeach; ?>
+  <?php if (!$products): ?><div class="empty-state"><p>No gear found.</p>Try another search or category.<br><a class="button button-dark" href="/#shop">Browse all gear <span>↗</span></a></div><?php endif; ?>
+  </div>
+</section>
+
+<?php if ($featured): ?><section class="section-wrap" style="padding-top:0">
+  <div class="section-head-row"><div><span class="eyebrow">RALLY PICKS</span><h2>Most loved right now.</h2></div><a class="link-arrow" href="#shop">Shop all →</a></div>
+  <div class="featured-strip">
+    <a class="feature-card" href="/product.php?id=<?= (int) $featured[0]['id'] ?>"><img src="<?= e($featured[0]['image_url']) ?>" alt="<?= e($featured[0]['name']) ?>" loading="lazy"><div><span class="eyebrow" style="color:#fff">★ BESTSELLER</span><h3><?= e($featured[0]['name']) ?></h3><p><?= e($featured[0]['description']) ?></p><span class="button button-lime">Shop now — <?= money($featured[0]['price']) ?></span></div></a>
+    <a class="feature-card" href="/?category=Outerwear#shop"><img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=1200&q=80" alt="Outerwear layering" loading="lazy"><div><span class="eyebrow" style="color:#fff">NEW SEASON</span><h3>Layer up. Stay moving.</h3><p>Hoodies and jackets for warm-ups, cool-downs and everything between.</p><span class="button button-light">Shop outerwear</span></div></a>
+  </div>
+</section><?php endif; ?>
+
+<section class="manifesto"><div class="manifesto-mark">R.</div><div><span class="eyebrow" style="color:#c9cec9">WHY WE RALLY</span><h2>Progress isn’t<br>a straight line.</h2><p>It’s showing up, finding your rhythm, and moving in a way that feels like yours. We make the gear. You make it matter.</p><a href="#shop" class="arrow-link">Find your next move <span>↗</span></a></div></section>
 <?php require __DIR__ . '/includes/footer.php'; ?>
