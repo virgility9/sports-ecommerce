@@ -155,22 +155,29 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
 .wish-btn:hover{transform:scale(1.08)}
 .wish-btn.active{color:var(--red)}
 .button-light.active{color:var(--red);border-color:var(--red)}
-.product-info{display:flex;justify-content:space-between;gap:10px;padding:14px 2px 8px}
-.product-name{display:block;font-size:14.5px;font-weight:700;line-height:1.35}
+.product-info{display:block;padding:16px 2px 12px}
+.product-name{display:block;font-size:16px;font-weight:700;line-height:1.35;color:#fff}
 .product-name:hover{text-decoration:underline;text-underline-offset:3px}
-.product-category{display:block;font-size:12px;color:var(--muted);margin-top:3px}
-.product-rating{font-size:12px;color:var(--muted);margin-top:5px;letter-spacing:.02em}
-.product-rating b{color:var(--gold)}
-.price{font-size:15px;font-weight:800;white-space:nowrap;font-family:var(--display);letter-spacing:-.02em}
+.product-category{display:block;font-size:11px;letter-spacing:.14em;font-weight:800;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.product-rating{font-size:12.5px;color:#d8dbd8;margin-top:6px}
+.product-rating .stars{color:var(--gold);letter-spacing:2px;margin-right:4px}
+.price{display:block;font-size:20px;font-weight:800;white-space:nowrap;font-family:var(--display);letter-spacing:-.02em;color:#fff;margin-top:8px}
 .price small{display:block;font-size:11px;color:var(--muted-2);font-weight:600;text-decoration:line-through}
-.quick-add{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--accent);color:#fff;border:0;border-radius:var(--radius-pill);padding:12px 16px;font-size:13px;font-weight:700;transition:.18s}
-.quick-add:hover{background:var(--accent-dark)}
-.quick-add span{color:#fff;font-size:17px;line-height:1}
-.quick-add.added{background:var(--green)}
+.quick-add{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;background:#fff;color:var(--ink);border:0;border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;font-weight:700;transition:.18s}
+.quick-add:hover{background:var(--accent);color:#fff}
+.quick-add:active{background:var(--accent-dark);color:#fff}
+.quick-add span{font-size:16px;line-height:1}
+.quick-add.added{background:var(--green);color:#fff}
 .button-dark.added{background:var(--green)}
 .product-image-wrap{position:relative}
 .qv-btn{position:absolute;left:12px;right:12px;bottom:12px;z-index:2;padding:11px 14px;border:0;border-radius:var(--radius-pill);background:rgba(255,255,255,.95);color:#101210;backdrop-filter:blur(4px);font-size:13px;font-weight:700;box-shadow:var(--shadow-sm);transition:.18s}
 .qv-btn:hover{background:#fff;transform:translateY(-1px)}
+/* Quick view only appears on hover (desktop). On touch screens there is
+   no cursor, so the button stays visible there. */
+@media (hover:hover){
+  .qv-btn{opacity:0;transform:translateY(6px);pointer-events:none}
+  .product-card:hover .qv-btn,.product-card:focus-within .qv-btn{opacity:1;transform:translateY(0);pointer-events:auto}
+}
 .was-price{font-size:12px;color:var(--muted-2);font-weight:600;text-decoration:line-through;margin-left:6px}
 .off-badge{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--accent);border-radius:var(--radius-pill);padding:3px 8px;margin-left:6px;white-space:nowrap}
 .detail-price .was-price{font-size:15px}
