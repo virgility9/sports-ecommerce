@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284 64" role="img" aria-label="Rally">
-  <rect width="64" height="64" rx="16" fill="#d9ff4f"/>
+  <rect width="64" height="64" rx="16" fill="#ff4b1f"/>
   <g transform="translate(32 32) skewX(-7) translate(-32 -32)" fill="#101210">
     <path d="M14 12 H35 C45 12 49 16 49 22 C49 28 45 32 39 33 L52 56 H41 L29 34 H24 V52 H14 Z"/>
   </g>
-  <text x="78" y="48" font-family="Manrope, Inter, 'Arial Black', 'Helvetica Neue', sans-serif" font-weight="900" font-style="italic" fill="#ffffff"><tspan font-size="48">R</tspan><tspan font-size="40" dx="-2">ALLY</tspan></text>
+  <text x="78" y="48" font-family="Oswald, Archivo, 'Arial Black', 'Helvetica Neue', sans-serif" font-weight="900" font-style="italic" fill="#ffffff"><tspan font-size="48">R</tspan><tspan font-size="40" dx="-2">ALLY</tspan></text>
 </svg>

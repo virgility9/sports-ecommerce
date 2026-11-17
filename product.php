@@ -53,7 +53,7 @@ $title = $product['name'] . ' — Rally'; require __DIR__ . '/includes/header.ph
     <a class="product-image" href="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>"><img src="<?= e($rel['image_url']) ?>" alt="<?= e($rel['name']) ?>" loading="lazy"><span class="product-tag"><?= e(strtoupper($rel['category'])) ?></span></a>
     <button class="wish-btn" type="button" aria-label="Save <?= e($rel['name']) ?> to wishlist" data-wishlist="<?= (int) $rel['id'] ?>">♡</button>
     <div class="product-info"><div><a class="product-name" href="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>"><?= e($rel['name']) ?></a><span class="product-category"><?= e($rel['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 24 + ($i * 11) % 90 ?> reviews</div></div><span class="price"><?= money($rel['price']) ?></span></div>
-    <form action="<?= e(app_url('cart-action.php')) ?>" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $rel['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Quick add <span>+</span></button></form>
+    <form action="<?= e(app_url('cart-action.php')) ?>" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $rel['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Add to cart <span>+</span></button></form>
   </article><?php endforeach; ?>
   </div>
 </section><?php endif; ?>

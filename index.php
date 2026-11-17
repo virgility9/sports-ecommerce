@@ -19,21 +19,21 @@ $featured = array_values(array_filter($products, fn($product) => (int) $product[
 $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
 ?>
 <section class="hero"><div class="hero-inner">
+  <div class="hero-image-overlay"></div>
   <div class="hero-copy">
-    <span class="eyebrow">GEAR UP. GET OUT THERE.</span>
-    <h1>Made to<br><em>move you.</em></h1>
+    <span class="hero-tag">NEW DROP — SPRING / SUMMER 26</span>
+    <h1>BUILT TO<br>MOVE FASTER.</h1>
     <p>Performance essentials for the miles, reps, and moments that make you. Lightweight, breathable, built to last.</p>
     <div class="hero-cta">
-      <a href="#shop" class="button button-lime">Shop the collection <span>↘</span></a>
+      <a href="#shop" class="button button-accent">Shop the collection <span>↘</span></a>
       <a href="<?= e(app_url('?category=Running#shop')) ?>" class="button button-light">Shop running</a>
     </div>
     <div class="hero-stats">
-      <div><strong>8+</strong><span>Core styles</span></div>
+      <div><strong><?= count($products) ?></strong><span>Products</span></div>
       <div><strong>4.9 ★</strong><span>Avg. rating</span></div>
       <div><strong>Free</strong><span>Shipping $100+</span></div>
     </div>
   </div>
-  <div class="hero-image"><div class="hero-image-overlay"></div><span class="image-label">SPRING / SUMMER 26</span><div class="hero-sticker">FIND<br>YOUR<br>PACE<span>✳</span></div><span class="hero-index">01 — 03</span></div>
 </div></section>
 
 <section class="ticker" aria-hidden="true"><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div><div>MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span> MOVE WITH PURPOSE <span>✳</span> BUILT FOR EVERY BODY <span>✳</span> FIND YOUR PACE <span>✳</span>&nbsp;</div></section>
@@ -81,11 +81,11 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
   <?php foreach ($products as $i => $product): ?><article class="product-card">
     <a class="product-image" href="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>">
       <img src="<?= e($product['image_url']) ?>" alt="<?= e($product['name']) ?>" loading="lazy">
-      <span class="product-tag <?= (int) $product['featured'] ? 'hot' : '' ?>"><?= (int) $product['featured'] ? '★ RALLY PICK' : e(strtoupper($product['category'])) ?></span>
+      <span class="product-tag <?= (int) $product['featured'] ? 'hot' : '' ?>"><?= (int) $product['featured'] ? '★ BEST SELLER' : e(strtoupper($product['category'])) ?></span>
     </a>
     <button class="wish-btn" type="button" aria-label="Save <?= e($product['name']) ?> to wishlist" data-wishlist="<?= (int) $product['id'] ?>">♡</button>
     <div class="product-info"><div><a class="product-name" href="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>"><?= e($product['name']) ?></a><span class="product-category"><?= e($product['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 18 + ($i * 7) % 120 ?> reviews</div></div><span class="price"><?= money($product['price']) ?></span></div>
-    <form action="<?= e(app_url('cart-action.php')) ?>" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Quick add <span>+</span></button></form>
+    <form action="<?= e(app_url('cart-action.php')) ?>" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Add to cart <span>+</span></button></form>
   </article><?php endforeach; ?>
   <?php if (!$products): ?><div class="empty-state"><p>No gear found.</p>Try another search or category.<br><a class="button button-dark" href="<?= e(app_url('#shop')) ?>">Browse all gear <span>↗</span></a></div><?php endif; ?>
   </div>
@@ -94,7 +94,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
 <?php if ($featured): ?><section class="section-wrap" style="padding-top:0">
   <div class="section-head-row"><div><span class="eyebrow">RALLY PICKS</span><h2>Most loved right now.</h2></div><a class="link-arrow" href="#shop">Shop all →</a></div>
   <div class="featured-strip">
-    <a class="feature-card" href="<?= e(app_url('product.php?id=' . (int) $featured[0]['id'])) ?>"><img src="<?= e($featured[0]['image_url']) ?>" alt="<?= e($featured[0]['name']) ?>" loading="lazy"><div><span class="eyebrow" style="color:#fff">★ BESTSELLER</span><h3><?= e($featured[0]['name']) ?></h3><p><?= e($featured[0]['description']) ?></p><span class="button button-lime">Shop now — <?= money($featured[0]['price']) ?></span></div></a>
+    <a class="feature-card" href="<?= e(app_url('product.php?id=' . (int) $featured[0]['id'])) ?>"><img src="<?= e($featured[0]['image_url']) ?>" alt="<?= e($featured[0]['name']) ?>" loading="lazy"><div><span class="eyebrow" style="color:#fff">★ BESTSELLER</span><h3><?= e($featured[0]['name']) ?></h3><p><?= e($featured[0]['description']) ?></p><span class="button button-accent">Shop now — <?= money($featured[0]['price']) ?></span></div></a>
     <a class="feature-card" href="<?= e(app_url('?category=Outerwear#shop')) ?>"><img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=1200&q=80" alt="Outerwear layering" loading="lazy"><div><span class="eyebrow" style="color:#fff">NEW SEASON</span><h3>Layer up. Stay moving.</h3><p>Hoodies and jackets for warm-ups, cool-downs and everything between.</p><span class="button button-light">Shop outerwear</span></div></a>
   </div>
 </section><?php endif; ?>

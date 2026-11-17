@@ -12,7 +12,7 @@ $currentSearch = trim($_GET['q'] ?? '');
   <meta name="theme-color" content="#ffffff"><meta name="description" content="Rally — performance sportswear for running, training and outerwear.">
   <title><?= e($title) ?></title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="<?= e(app_url('assets/img/logo-mark.svg')) ?>">
   <link rel="stylesheet" href="<?= e(app_url('assets/css/style.css')) ?>">
 </head>
