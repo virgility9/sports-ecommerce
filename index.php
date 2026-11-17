@@ -6,6 +6,7 @@ $sort = $_GET['sort'] ?? 'featured';
 $sortSql = match ($sort) {
     'price-asc' => 'price ASC',
     'price-desc' => 'price DESC',
+    'discount' => '(CASE WHEN compare_price IS NOT NULL AND compare_price > price THEN (compare_price - price) / compare_price ELSE 0 END) DESC, featured DESC, created_at DESC',
     'newest' => 'created_at DESC',
     'name' => 'name ASC',
     default => 'featured DESC, created_at DESC',
@@ -70,6 +71,7 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
       <select name="sort" aria-label="Sort products" onchange="this.form.submit()">
         <option value="featured" <?= $sort === 'featured' ? 'selected' : '' ?>>Featured</option>
         <option value="newest" <?= $sort === 'newest' ? 'selected' : '' ?>>Newest</option>
+        <option value="discount" <?= $sort === 'discount' ? 'selected' : '' ?>>Biggest discount</option>
         <option value="price-asc" <?= $sort === 'price-asc' ? 'selected' : '' ?>>Price: low to high</option>
         <option value="price-desc" <?= $sort === 'price-desc' ? 'selected' : '' ?>>Price: high to low</option>
         <option value="name" <?= $sort === 'name' ? 'selected' : '' ?>>Name A–Z</option>
@@ -79,12 +81,15 @@ $title = 'Rally — Made to Move'; require __DIR__ . '/includes/header.php';
   <?php if ($search !== ''): ?><p style="margin:0 0 18px;color:var(--muted);font-size:13.5px">Results for “<strong style="color:var(--ink)"><?= e($search) ?></strong>” — <a href="<?= e(app_url('#shop')) ?>" style="text-decoration:underline">clear search</a></p><?php endif; ?>
   <div class="product-grid">
   <?php foreach ($products as $i => $product): ?><article class="product-card">
-    <a class="product-image" href="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>">
-      <img src="<?= e($product['image_url']) ?>" alt="<?= e($product['name']) ?>" loading="lazy">
-      <span class="product-tag <?= (int) $product['featured'] ? 'hot' : '' ?>"><?= (int) $product['featured'] ? '★ BEST SELLER' : e(strtoupper($product['category'])) ?></span>
-    </a>
+    <div class="product-image-wrap">
+      <a class="product-image" href="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>">
+        <img src="<?= e($product['image_url']) ?>" alt="<?= e($product['name']) ?>" loading="lazy">
+        <span class="product-tag <?= (int) $product['featured'] ? 'hot' : '' ?>"><?= (int) $product['featured'] ? '★ BEST SELLER' : e(strtoupper($product['category'])) ?></span>
+      </a>
+      <button class="qv-btn" type="button" data-quick-view data-id="<?= (int) $product['id'] ?>" data-name="<?= e($product['name']) ?>" data-category="<?= e($product['category']) ?>" data-price="<?= (float) $product['price'] ?>" data-compare="<?= e(isset($product['compare_price']) && $product['compare_price'] !== null ? (string) (float) $product['compare_price'] : '') ?>" data-image="<?= e($product['image_url']) ?>" data-desc="<?= e($product['description']) ?>" data-stock="<?= (int) $product['stock'] ?>" data-url="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>" data-reviews="<?= 18 + ($i * 7) % 120 ?>">Quick view</button>
+    </div>
     <button class="wish-btn" type="button" aria-label="Save <?= e($product['name']) ?> to wishlist" data-wishlist="<?= (int) $product['id'] ?>">♡</button>
-    <div class="product-info"><div><a class="product-name" href="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>"><?= e($product['name']) ?></a><span class="product-category"><?= e($product['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 18 + ($i * 7) % 120 ?> reviews</div></div><span class="price"><?= money($product['price']) ?></span></div>
+    <div class="product-info"><div><a class="product-name" href="<?= e(app_url('product.php?id=' . (int) $product['id'])) ?>"><?= e($product['name']) ?></a><span class="product-category"><?= e($product['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 18 + ($i * 7) % 120 ?> reviews</div></div><span class="price"><?= money($product['price']) ?><?php if (sale_pct($product)): ?><span class="was-price"><?= money($product['compare_price']) ?></span><span class="off-badge">−<?= sale_pct($product) ?>%</span><?php endif; ?></span></div>
     <form action="<?= e(app_url('cart-action.php')) ?>" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Add to cart <span>+</span></button></form>
   </article><?php endforeach; ?>
   <?php if (!$products): ?><div class="empty-state"><p>No gear found.</p>Try another search or category.<br><a class="button button-dark" href="<?= e(app_url('#shop')) ?>">Browse all gear <span>↗</span></a></div><?php endif; ?>

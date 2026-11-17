@@ -41,6 +41,9 @@ require_once __DIR__ . '/database.php';
 
 function e(?string $value): string { return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function money(float|string $amount): string { global $config; return '$' . number_format((float) $amount, 2); }
+// Sale discount percent (0 when not on sale). compare_price is the optional
+// "was" price; NULL/absent means full price. Safe before the column exists.
+function sale_pct(array $product): int { $compare = (float) ($product['compare_price'] ?? 0); $price = (float) $product['price']; return ($compare > $price && $compare > 0) ? (int) round((1 - $price / $compare) * 100) : 0; }
 function csrf_token(): string { if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32)); return $_SESSION['csrf']; }
 function verify_csrf(): void {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !hash_equals($_SESSION['csrf'] ?? '', $_POST['csrf'] ?? '')) {

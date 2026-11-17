@@ -167,6 +167,26 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
 .quick-add span{color:var(--accent);font-size:17px;line-height:1}
 .quick-add.added{background:var(--green)}
 .button-dark.added{background:var(--green)}
+.product-image-wrap{position:relative}
+.qv-btn{position:absolute;left:12px;right:12px;bottom:12px;z-index:2;padding:11px 14px;border:0;border-radius:var(--radius-pill);background:rgba(255,255,255,.95);backdrop-filter:blur(4px);font-size:13px;font-weight:700;box-shadow:var(--shadow-sm);transition:.18s}
+.qv-btn:hover{background:#fff;transform:translateY(-1px)}
+.was-price{font-size:12px;color:var(--muted-2);font-weight:600;text-decoration:line-through;margin-left:6px}
+.off-badge{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--accent);border-radius:var(--radius-pill);padding:3px 8px;margin-left:6px;white-space:nowrap}
+.detail-price .was-price{font-size:15px}
+.detail-price .off-badge{font-size:12px;vertical-align:middle}
+
+/* Quick view modal */
+.qv-overlay{position:fixed;inset:0;z-index:120;background:rgba(16,18,16,.55);backdrop-filter:blur(4px);display:grid;place-items:center;padding:20px}
+.qv-overlay[hidden]{display:none}
+.qv-modal{position:relative;width:min(100%,860px);max-height:calc(100vh - 40px);overflow:auto;background:#fff;border-radius:24px;display:grid;grid-template-columns:1fr 1fr;box-shadow:var(--shadow-lg)}
+.qv-close{position:absolute;right:14px;top:14px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.95);font-size:16px;box-shadow:var(--shadow-sm)}
+.qv-media{background:#eceee9;min-height:340px}
+.qv-media img{width:100%;height:100%;object-fit:cover;display:block}
+.qv-copy{padding:32px 32px 28px}
+.qv-copy h2{font-family:var(--display);font-size:32px;letter-spacing:-.02em;margin:10px 0 8px;font-weight:700;line-height:1.05}
+.qv-copy>p{font-size:14px;color:#4c504d;line-height:1.7;margin:12px 0}
+.qv-copy .stock-note{margin:14px 0}
+.qv-copy .detail-form{margin-top:20px}
 .empty-state{padding:64px 20px;text-align:center;color:var(--muted);grid-column:1/-1;background:var(--paper);border-radius:var(--radius)}
 .empty-state p{font-size:16px;color:var(--ink);font-weight:700;margin:0 0 6px}
 .empty-state .button{margin-top:18px}
@@ -450,6 +470,10 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
   .dash-panel{padding:18px}
   .receipt-card{padding:20px}
   .receipt-meta{grid-template-columns:1fr}
+  .qv-modal{grid-template-columns:1fr}
+  .qv-media{min-height:240px}
+  .qv-copy{padding:24px 20px}
+  .qv-copy h2{font-size:28px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}

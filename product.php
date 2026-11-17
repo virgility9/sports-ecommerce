@@ -14,7 +14,7 @@ $title = $product['name'] . ' — Rally'; require __DIR__ . '/includes/header.ph
     <span class="eyebrow"><?= e(strtoupper($product['category'])) ?> / RALLY ESSENTIALS</span>
     <h1><?= e($product['name']) ?></h1>
     <div class="detail-rating"><b>★ 4.9</b> · 128 reviews · <span style="color:var(--green);font-weight:700">● In stock</span></div>
-    <div class="detail-price"><?= money($product['price']) ?> <small>· or 4 payments of <?= money((float) $product['price'] / 4) ?></small></div>
+    <div class="detail-price"><?= money($product['price']) ?><?php if (sale_pct($product)): ?> <span class="was-price"><?= money($product['compare_price']) ?></span><span class="off-badge">−<?= sale_pct($product) ?>%</span><?php endif; ?> <small>· or 4 payments of <?= money((float) $product['price'] / 4) ?></small></div>
     <p><?= e($product['description']) ?></p>
     <div class="stock-note <?= $lowStock ? 'low' : '' ?>"><span class="note-dot"></span><?= $lowStock ? 'Only a few left — order soon' : 'In stock and ready to move' ?> · <?= (int) $product['stock'] ?> available</div>
 
@@ -50,9 +50,12 @@ $title = $product['name'] . ' — Rally'; require __DIR__ . '/includes/header.ph
   <div class="section-head-row"><div><span class="eyebrow">COMPLETE THE LOOK</span><h2>You may also like.</h2></div><a class="link-arrow" href="<?= e(app_url('?category=' . urlencode($product['category']) . '#shop')) ?>">More <?= e($product['category']) ?> →</a></div>
   <div class="product-grid">
   <?php foreach ($related as $i => $rel): ?><article class="product-card">
-    <a class="product-image" href="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>"><img src="<?= e($rel['image_url']) ?>" alt="<?= e($rel['name']) ?>" loading="lazy"><span class="product-tag"><?= e(strtoupper($rel['category'])) ?></span></a>
+    <div class="product-image-wrap">
+      <a class="product-image" href="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>"><img src="<?= e($rel['image_url']) ?>" alt="<?= e($rel['name']) ?>" loading="lazy"><span class="product-tag"><?= e(strtoupper($rel['category'])) ?></span></a>
+      <button class="qv-btn" type="button" data-quick-view data-id="<?= (int) $rel['id'] ?>" data-name="<?= e($rel['name']) ?>" data-category="<?= e($rel['category']) ?>" data-price="<?= (float) $rel['price'] ?>" data-compare="<?= e(isset($rel['compare_price']) && $rel['compare_price'] !== null ? (string) (float) $rel['compare_price'] : '') ?>" data-image="<?= e($rel['image_url']) ?>" data-desc="<?= e($rel['description']) ?>" data-stock="<?= (int) $rel['stock'] ?>" data-url="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>" data-reviews="<?= 24 + ($i * 11) % 90 ?>">Quick view</button>
+    </div>
     <button class="wish-btn" type="button" aria-label="Save <?= e($rel['name']) ?> to wishlist" data-wishlist="<?= (int) $rel['id'] ?>">♡</button>
-    <div class="product-info"><div><a class="product-name" href="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>"><?= e($rel['name']) ?></a><span class="product-category"><?= e($rel['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 24 + ($i * 11) % 90 ?> reviews</div></div><span class="price"><?= money($rel['price']) ?></span></div>
+    <div class="product-info"><div><a class="product-name" href="<?= e(app_url('product.php?id=' . (int) $rel['id'])) ?>"><?= e($rel['name']) ?></a><span class="product-category"><?= e($rel['category']) ?></span><div class="product-rating"><b>★ 4.9</b> · <?= 24 + ($i * 11) % 90 ?> reviews</div></div><span class="price"><?= money($rel['price']) ?><?php if (sale_pct($rel)): ?><span class="was-price"><?= money($rel['compare_price']) ?></span><span class="off-badge">−<?= sale_pct($rel) ?>%</span><?php endif; ?></span></div>
     <form action="<?= e(app_url('cart-action.php')) ?>" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="product_id" value="<?= (int) $rel['id'] ?>"><input type="hidden" name="action" value="add"><button class="quick-add" type="submit" data-quick-add>Add to cart <span>+</span></button></form>
   </article><?php endforeach; ?>
   </div>

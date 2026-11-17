@@ -44,6 +44,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
   }
 
+  // Quick view modal: filled from the card's data attributes, always
+  // reachable (unlike the preview's hover-only bar). Add to cart inside
+  // uses the same no-reload handler as the grid buttons.
+  const qvOverlay = document.querySelector('[data-qv-overlay]');
+  if (qvOverlay) {
+    const q = (sel) => qvOverlay.querySelector(sel);
+    const qvForm = q('[data-qv-form]');
+    const money = (n) => '$' + Number(n).toFixed(2);
+    const openQv = (btn) => {
+      const d = btn.dataset;
+      const price = parseFloat(d.price || '0');
+      const compare = parseFloat(d.compare || '0');
+      const stock = parseInt(d.stock || '0', 10);
+      q('[data-qv-img]').src = d.image; q('[data-qv-img]').alt = d.name;
+      q('[data-qv-cat]').textContent = (d.category || '').toUpperCase();
+      q('[data-qv-name]').textContent = d.name;
+      q('[data-qv-reviews]').textContent = d.reviews || '';
+      q('[data-qv-price]').textContent = money(price);
+      q('[data-qv-install]').textContent = money(price / 4);
+      const was = q('[data-qv-was]'), off = q('[data-qv-off]');
+      if (compare > price) { was.textContent = money(compare); was.hidden = false; off.textContent = '−' + Math.round((1 - price / compare) * 100) + '%'; off.hidden = false; }
+      else { was.hidden = true; off.hidden = true; }
+      q('[data-qv-desc]').textContent = d.desc || '';
+      q('[data-qv-stock]').textContent = (stock < 5 ? 'Only a few left — order soon' : 'In stock and ready to move') + ' · ' + stock + ' available';
+      q('[data-qv-pid]').value = d.id;
+      const qty = q('[data-qv-qty]'); qty.max = Math.max(1, stock); qty.value = '1';
+      q('[data-qv-link]').href = d.url;
+      qvOverlay.querySelectorAll('.size-btn').forEach((b) => b.classList.toggle('selected', b.textContent.trim() === 'M'));
+      qvOverlay.hidden = false; document.body.style.overflow = 'hidden';
+    };
+    const closeQv = () => { qvOverlay.hidden = true; document.body.style.overflow = ''; };
+    document.querySelectorAll('[data-quick-view]').forEach((btn) => btn.addEventListener('click', () => openQv(btn)));
+    q('[data-qv-close]').addEventListener('click', closeQv);
+    qvOverlay.addEventListener('click', (e) => { if (e.target === qvOverlay) closeQv(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !qvOverlay.hidden) closeQv(); });
+    qvForm?.addEventListener('submit', () => setTimeout(closeQv, 1200));
+  }
+
   // Toast helper (footer has #toast).
   const toast = document.getElementById('toast');
   let toastTimer;
