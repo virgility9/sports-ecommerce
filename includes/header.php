@@ -13,29 +13,29 @@ $currentSearch = trim($_GET['q'] ?? '');
   <title><?= e($title) ?></title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="<?= e(app_url('assets/css/style.css')) ?>">
 </head>
 <body>
-<div class="announcement">FREE SHIPPING ON ORDERS OVER $100 <span>✳</span> 30-DAY EASY RETURNS <span>✳</span> <a href="/#shop">SHOP NEW DROPS</a></div>
+<div class="announcement">FREE SHIPPING ON ORDERS OVER $100 <span>✳</span> 30-DAY EASY RETURNS <span>✳</span> <a href="<?= e(app_url('#shop')) ?>">SHOP NEW DROPS</a></div>
 <header class="site-header" id="siteHeader">
   <button class="icon-btn menu-btn" type="button" aria-label="Open menu" aria-expanded="false" data-menu-btn>☰</button>
-  <a class="brand" href="/">RALLY<span>®</span></a>
+  <a class="brand" href="<?= e(app_url('')) ?>">RALLY<span>®</span></a>
   <nav class="main-nav" data-main-nav aria-label="Main navigation">
-    <a href="/#shop" class="<?= $currentCategory === '' && $currentSearch === '' ? 'active' : '' ?>">Shop all</a>
-    <a href="/?category=Running#shop" class="<?= $currentCategory === 'Running' ? 'active' : '' ?>">Running</a>
-    <a href="/?category=Training#shop" class="<?= $currentCategory === 'Training' ? 'active' : '' ?>">Training</a>
-    <a href="/?category=Outerwear#shop" class="<?= $currentCategory === 'Outerwear' ? 'active' : '' ?>">Outerwear</a>
+    <a href="<?= e(app_url('#shop')) ?>" class="<?= $currentCategory === '' && $currentSearch === '' ? 'active' : '' ?>">Shop all</a>
+    <a href="<?= e(app_url('?category=Running#shop')) ?>" class="<?= $currentCategory === 'Running' ? 'active' : '' ?>">Running</a>
+    <a href="<?= e(app_url('?category=Training#shop')) ?>" class="<?= $currentCategory === 'Training' ? 'active' : '' ?>">Training</a>
+    <a href="<?= e(app_url('?category=Outerwear#shop')) ?>" class="<?= $currentCategory === 'Outerwear' ? 'active' : '' ?>">Outerwear</a>
   </nav>
   <div class="header-search">
-    <form action="/" method="get" role="search">
+    <form action="<?= e(app_url('')) ?>" method="get" role="search">
       <input type="search" name="q" placeholder="Search shoes, tees, hoodies…" value="<?= e($currentSearch) ?>" aria-label="Search gear">
       <button type="submit" aria-label="Search">⌕</button>
     </form>
   </div>
   <div class="header-actions">
-    <?php if (current_user()): ?><a class="account-link" href="/orders.php">Hi, <?= e(explode(' ', current_user()['name'])[0]) ?></a><?php else: ?><a class="account-link" href="/login.php">Sign in</a><?php endif; ?>
-    <a class="cart-link" href="/cart.php" aria-label="View bag">🛍 Bag <span><?= cart_count() ?></span></a>
-    <?php if (current_user()): ?><form action="/logout.php" method="post" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><button class="text-button" type="submit">Log out</button></form><?php endif; ?>
+    <?php if (current_user()): ?><a class="account-link" href="<?= e(app_url('orders.php')) ?>">Hi, <?= e(explode(' ', current_user()['name'])[0]) ?></a><?php else: ?><a class="account-link" href="<?= e(app_url('login.php')) ?>">Sign in</a><?php endif; ?>
+    <a class="cart-link" href="<?= e(app_url('cart.php')) ?>" aria-label="View bag">🛍 Bag <span><?= cart_count() ?></span></a>
+    <?php if (current_user()): ?><form action="<?= e(app_url('logout.php')) ?>" method="post" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><button class="text-button" type="submit">Log out</button></form><?php endif; ?>
   </div>
 </header>
 <?php if ($notice): ?><div class="flash" role="status"><?= e($notice) ?></div><?php endif; ?>

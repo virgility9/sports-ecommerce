@@ -7,6 +7,20 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_set_cookie_params(['httponly' => true, 'secure' => $secure, 'samesite' => 'Lax']);
     session_start();
 }
+// Base path: the URL folder this app lives in ('' at a domain root,
+// '/sports-ecommerce' under localhost/sports-ecommerce/). All links,
+// assets and redirects go through app_url() so the site works both ways.
+$appRootFs = str_replace('\\', '/', realpath(__DIR__ . '/..') ?: (__DIR__ . '/..'));
+$docRootFs = isset($_SERVER['DOCUMENT_ROOT']) ? str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT']) ?: $_SERVER['DOCUMENT_ROOT']) : $appRootFs;
+$basePath = '';
+if ($docRootFs !== '' && str_starts_with($appRootFs, $docRootFs)) { $basePath = substr($appRootFs, strlen($docRootFs)); }
+if ($basePath === '' || $basePath === '/') {
+    $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
+    if (str_ends_with($scriptDir, '/admin')) { $scriptDir = substr($scriptDir, 0, -6); }
+    if ($scriptDir !== '/' && $scriptDir !== '.' && $scriptDir !== '') { $basePath = $scriptDir; }
+}
+$basePath = rtrim($basePath, '/');
+function app_url(string $path): string { global $basePath; $path = '/' . ltrim($path, '/'); return ($basePath === '' ? '' : $basePath) . $path; }
 require_once __DIR__ . '/database.php';
 
 function e(?string $value): string { return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
@@ -18,7 +32,7 @@ function verify_csrf(): void {
     }
 }
 function current_user(): ?array { return $_SESSION['user'] ?? null; }
-function require_login(): void { if (!current_user()) { $_SESSION['flash'] = 'Please sign in to continue.'; header('Location: /login.php'); exit; } }
+function require_login(): void { if (!current_user()) { $_SESSION['flash'] = 'Please sign in to continue.'; header('Location: ' . app_url('/login.php')); exit; } }
 function require_admin(): void { require_login(); if (current_user()['role'] !== 'admin') { http_response_code(403); exit('Administrator access required.'); } }
 function flash(string $message = ''): ?string {
     if ($message !== '') { $_SESSION['flash'] = $message; return null; }

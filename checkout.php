@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php'; require_login();
 $items = cart_products();
-if (!$items) { flash('Your bag is empty. Add something before checking out.'); header('Location: /cart.php'); exit; }
+if (!$items) { flash('Your bag is empty. Add something before checking out.'); header('Location: ' . app_url('/cart.php')); exit; }
 $subtotal = cart_total($items); $shipping = $subtotal >= 100 ? 0 : 7; $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf(); $recipient = trim($_POST['recipient_name'] ?? ''); $address = trim($_POST['address'] ?? ''); $city = trim($_POST['city'] ?? ''); $postal = trim($_POST['postal_code'] ?? '');
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('INSERT INTO orders (user_id, total, recipient_name, address, city, postal_code) VALUES (?, ?, ?, ?, ?, ?)'); $stmt->execute([current_user()['id'], $total, $recipient, $address, $city, $postal]); $orderId = (int) $pdo->lastInsertId();
             $insert = $pdo->prepare('INSERT INTO order_items (order_id, product_id, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)'); $update = $pdo->prepare('UPDATE products SET stock = stock - ? WHERE id = ?');
             foreach ($locked as $line) { $insert->execute([$orderId, $line['id'], $line['name'], $line['price'], $line['quantity']]); $update->execute([$line['quantity'], $line['id']]); }
-            $pdo->commit(); $_SESSION['cart'] = []; header('Location: /orders.php?placed=' . $orderId); exit;
+            $pdo->commit(); $_SESSION['cart'] = []; header('Location: ' . app_url('/orders.php?placed=' . $orderId)); exit;
         } catch (RuntimeException $exception) { if ($pdo->inTransaction()) $pdo->rollBack(); $error = $exception->getMessage(); }
         catch (Throwable $exception) { if ($pdo->inTransaction()) $pdo->rollBack(); throw $exception; }
     }
