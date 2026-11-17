@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('INSERT INTO orders (user_id, total, recipient_name, address, city, postal_code) VALUES (?, ?, ?, ?, ?, ?)'); $stmt->execute([current_user()['id'], $total, $recipient, $address, $city, $postal]); $orderId = (int) $pdo->lastInsertId();
             $insert = $pdo->prepare('INSERT INTO order_items (order_id, product_id, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)'); $update = $pdo->prepare('UPDATE products SET stock = stock - ? WHERE id = ?');
             foreach ($locked as $line) { $insert->execute([$orderId, $line['id'], $line['name'], $line['price'], $line['quantity']]); $update->execute([$line['quantity'], $line['id']]); }
-            $pdo->commit(); $_SESSION['cart'] = []; header('Location: ' . app_url('/orders.php?placed=' . $orderId)); exit;
+            $pdo->commit(); $_SESSION['cart'] = []; header('Location: ' . app_url('/receipt.php?id=' . $orderId)); exit;
         } catch (RuntimeException $exception) { if ($pdo->inTransaction()) $pdo->rollBack(); $error = $exception->getMessage(); }
         catch (Throwable $exception) { if ($pdo->inTransaction()) $pdo->rollBack(); throw $exception; }
     }

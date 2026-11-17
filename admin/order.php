@@ -58,6 +58,6 @@ $title = 'Order #' . (int) $order['id'] . ' — Rally admin'; require __DIR__ . 
       </div>
     </div>
   </div>
-  <p class="panel-link"><a href="<?= e(app_url('admin/orders.php')) ?>">← Back to all orders</a></p>
+  <p class="panel-link"><a href="<?= e(app_url('receipt.php?id=' . (int) $order['id'])) ?>">View receipt ↗</a> · <a href="<?= e(app_url('admin/orders.php')) ?>">← Back to all orders</a></p>
 </section>
 <?php require __DIR__ . '/../includes/footer.php'; ?>
