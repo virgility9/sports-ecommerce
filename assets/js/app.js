@@ -80,9 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Quick-add feedback (form still submits normally).
-  document.querySelectorAll('[data-quick-add]').forEach((btn) => {
-    btn.addEventListener('click', () => { btn.classList.add('added'); });
+  // Quick add without a page reload: post in the background, then update
+  // the bag count and toast. Falls back to a normal submit if anything fails.
+  document.querySelectorAll('form').forEach((form) => {
+    const btn = form.querySelector('[data-quick-add]');
+    if (!btn) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then((res) => res.json())
+        .then((data) => {
+          btn.disabled = false;
+          if (!data.ok) { showToast(data.message || 'Could not add that item.'); return; }
+          const count = document.querySelector('.cart-link span');
+          if (count) count.textContent = data.count;
+          showToast('<b>Added to your bag.</b>');
+          btn.classList.add('added');
+          setTimeout(() => btn.classList.remove('added'), 1800);
+        })
+        .catch(() => { form.submit(); });
+    });
   });
 
   // Newsletter (front-end only for now).

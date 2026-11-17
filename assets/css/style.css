@@ -166,6 +166,7 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
 .quick-add:hover{background:#2b302b}
 .quick-add span{color:var(--lime);font-size:17px;line-height:1}
 .quick-add.added{background:var(--green)}
+.button-dark.added{background:var(--green)}
 .empty-state{padding:64px 20px;text-align:center;color:var(--muted);grid-column:1/-1;background:var(--paper);border-radius:var(--radius)}
 .empty-state p{font-size:16px;color:var(--ink);font-weight:700;margin:0 0 6px}
 .empty-state .button{margin-top:18px}
