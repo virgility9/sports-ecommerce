@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['cart'] ??= [];
     if ($action === 'remove') unset($_SESSION['cart'][$product['id']]);
     elseif ($action === 'update') { $qty = (int) ($_POST['quantity'] ?? 1); if ($qty < 1) unset($_SESSION['cart'][$product['id']]); else $_SESSION['cart'][$product['id']] = min($qty, (int) $product['stock'], 99); }
-    elseif ($action === 'add') { $qty = max(1, (int) ($_POST['quantity'] ?? 1)); $_SESSION['cart'][$product['id']] = min((int) $product['stock'], 99, (int) ($_SESSION['cart'][$product['id']] ?? 0) + $qty); flash('Added to your bag.'); }
-    header('Location: ' . ($action === 'add' ? '/cart.php' : '/cart.php')); exit;
+    elseif ($action === 'add') { $qty = max(1, (int) ($_POST['quantity'] ?? 1)); $_SESSION['cart'][$product['id']] = min((int) $product['stock'], 99, (int) ($_SESSION['cart'][$product['id']] ?? 0) + $qty); flash('Added to your bag.'); header('Location: ' . back_url()); exit; }
+    header('Location: ' . app_url('/cart.php')); exit;
 }
 header('Location: ' . app_url('/')); exit;

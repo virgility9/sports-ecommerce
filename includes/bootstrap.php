@@ -21,6 +21,22 @@ if ($basePath === '' || $basePath === '/') {
 }
 $basePath = rtrim($basePath, '/');
 function app_url(string $path): string { global $basePath; $path = '/' . ltrim($path, '/'); return ($basePath === '' ? '' : $basePath) . $path; }
+// Where the visitor just came from, for "stay on this page" redirects.
+// Only same-site referrers are trusted (prevents open redirects); anything
+// else falls back to the home page.
+function back_url(): string {
+    $ref = $_SERVER['HTTP_REFERER'] ?? '';
+    if ($ref !== '') {
+        $parts = parse_url($ref);
+        $host = $parts['host'] ?? '';
+        if ($host === '' || $host === ($_SERVER['HTTP_HOST'] ?? '')) {
+            $path = $parts['path'] ?? '/';
+            $query = isset($parts['query']) ? '?' . $parts['query'] : '';
+            return $path . $query;
+        }
+    }
+    return app_url('/');
+}
 require_once __DIR__ . '/database.php';
 
 function e(?string $value): string { return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
