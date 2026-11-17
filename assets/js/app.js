@@ -23,23 +23,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
   }
 
-  // Cart menu (header pill): ☰ + 🛒 opens View cart / Order history.
-  const cartMenu = document.querySelector('[data-cart-menu]');
-  const cartMenuBtn = document.querySelector('[data-cart-menu-btn]');
-  if (cartMenu && cartMenuBtn) {
-    cartMenuBtn.addEventListener('click', (e) => {
+  // Floating cart button: tap toggles the menu (mobile); hover opens it
+  // on desktop via CSS. Closes on outside tap, Escape, or picking a link.
+  const cartFab = document.querySelector('[data-cart-fab]');
+  const cartFabBtn = document.querySelector('[data-cart-fab-btn]');
+  if (cartFab && cartFabBtn) {
+    cartFabBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const open = cartMenu.classList.toggle('open');
-      cartMenuBtn.setAttribute('aria-expanded', String(open));
+      const open = cartFab.classList.toggle('open');
+      cartFabBtn.setAttribute('aria-expanded', String(open));
     });
     document.addEventListener('click', (e) => {
-      if (!cartMenu.contains(e.target)) { cartMenu.classList.remove('open'); cartMenuBtn.setAttribute('aria-expanded', 'false'); }
+      if (!cartFab.contains(e.target)) { cartFab.classList.remove('open'); cartFabBtn.setAttribute('aria-expanded', 'false'); }
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { cartMenu.classList.remove('open'); cartMenuBtn.setAttribute('aria-expanded', 'false'); }
+      if (e.key === 'Escape') { cartFab.classList.remove('open'); cartFabBtn.setAttribute('aria-expanded', 'false'); }
     });
-    cartMenu.querySelectorAll('.cart-dropdown a').forEach((a) => a.addEventListener('click', () => {
-      cartMenu.classList.remove('open'); cartMenuBtn.setAttribute('aria-expanded', 'false');
+    cartFab.querySelectorAll('.cart-fab-menu a').forEach((a) => a.addEventListener('click', () => {
+      cartFab.classList.remove('open'); cartFabBtn.setAttribute('aria-expanded', 'false');
     }));
   }
 

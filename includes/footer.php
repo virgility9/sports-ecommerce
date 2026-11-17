@@ -34,6 +34,13 @@
   </div>
   <div class="footer-bottom"><div class="footer-bottom-inner"><span>© <?= date('Y') ?> Rally Sportswear — Move your own way.</span><span>Free shipping over $100 · 30-day returns · Pay on delivery</span></div></div>
 </footer>
+<div class="cart-fab" data-cart-fab>
+  <div class="cart-fab-menu" role="menu" aria-label="Cart menu">
+    <a href="<?= e(app_url('cart.php')) ?>" role="menuitem">🛒 View cart <span><?= cart_count() ?> item<?= cart_count() === 1 ? '' : 's' ?></span></a>
+    <a href="<?= e(app_url('orders.php')) ?>" role="menuitem">📋 Order history</a>
+  </div>
+  <button class="cart-fab-btn" type="button" aria-label="Cart menu" aria-expanded="false" aria-haspopup="true" data-cart-fab-btn>🛒<span class="cart-count"><?= cart_count() ?></span></button>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="<?= e(app_url('assets/js/app.js')) ?>" defer></script>
 </body></html>

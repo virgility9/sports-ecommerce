@@ -50,17 +50,17 @@ button{cursor:pointer}
 .icon-btn:hover{background:var(--paper)}
 .account-link{font-size:13.5px;font-weight:600;padding:9px 12px;border-radius:var(--radius-pill)}
 .account-link:hover{background:var(--paper)}
-.cart-menu{position:relative}
-.cart-menu-btn{display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:700;padding:9px 14px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;transition:.18s;line-height:1}
-.cart-menu-btn:hover{border-color:var(--ink)}
-.cart-menu-btn .cart-menu-ic{font-size:15px}
-.cart-menu-btn .cart-menu-cart{font-size:17px}
-.cart-count{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:var(--radius-pill);background:var(--lime);font-size:11px;font-weight:800}
-.cart-dropdown{position:absolute;right:0;top:calc(100% + 10px);min-width:220px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-md);padding:6px;display:none;z-index:60}
-.cart-menu.open .cart-dropdown{display:block}
-.cart-dropdown a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;font-size:13.5px;font-weight:600}
-.cart-dropdown a:hover{background:var(--paper)}
-.cart-dropdown a span{font-size:12px;color:var(--muted);font-weight:600}
+/* Floating cart button (bottom-right circle): hover on desktop / tap on
+   mobile pops the menu up above it. */
+.cart-fab{position:fixed;right:20px;bottom:20px;z-index:90}
+.cart-fab-btn{position:relative;width:56px;height:56px;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:24px;line-height:1;display:grid;place-items:center;box-shadow:var(--shadow-lg);transition:.18s}
+.cart-fab-btn:hover{background:#2b302b;transform:translateY(-2px)}
+.cart-count{position:absolute;top:-4px;right:-4px;display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:var(--radius-pill);background:var(--lime);color:var(--ink);font-size:11px;font-weight:800;border:2px solid #fff}
+.cart-fab-menu{position:absolute;right:0;bottom:calc(100% + 12px);min-width:220px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-md);padding:6px;display:none}
+.cart-fab:hover .cart-fab-menu,.cart-fab:focus-within .cart-fab-menu,.cart-fab.open .cart-fab-menu{display:block}
+.cart-fab-menu a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;font-size:13.5px;font-weight:600}
+.cart-fab-menu a:hover{background:var(--paper)}
+.cart-fab-menu a span{font-size:12px;color:var(--muted);font-weight:600}
 .text-button,.inline-button{border:0;background:none;color:inherit;padding:0;font-size:12px}
 .menu-btn{display:none}
 .flash{padding:13px 20px;background:var(--lime);font-size:13.5px;text-align:center;font-weight:600}
@@ -423,7 +423,8 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
   .main-nav a{padding:13px 14px;font-size:15px}
   .menu-btn{display:inline-grid}
   .account-link{display:none}
-  .cart-menu-btn{padding:8px 12px}
+  .cart-fab{right:16px;bottom:16px}
+  .cart-fab-btn{width:52px;height:52px;font-size:22px}
   .hero{margin-top:12px;padding:0 12px}
   .hero-inner{border-radius:22px}
   .hero-copy{padding:44px 22px 36px}
@@ -484,7 +485,7 @@ input::placeholder,textarea::placeholder{color:var(--muted-2)}
 .receipt-note{font-size:12.5px;color:var(--muted);text-align:center;margin:20px 0 0}
 .receipt-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
 @media print{
-  .announcement,.site-header,.site-footer,.toast,.no-print{display:none!important}
+  .announcement,.site-header,.site-footer,.toast,.cart-fab,.no-print{display:none!important}
   body{background:#fff}
   .section-wrap{padding:0}
   .receipt-card{border:0;max-width:100%;padding:0}
