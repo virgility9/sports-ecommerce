@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     if (btn.disabled) return;
     btn.disabled = true;
-    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    // NOTE: getAttribute, not form.action — every add form carries a hidden
+    // <input name="action">, and named controls shadow the form's own
+    // properties, so form.action returns that input element and fetch would
+    // post to "[object HTMLInputElement]" instead of cart-action.php.
+    fetch(form.getAttribute('action') || location.href, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
       .then((res) => res.text().then((text) => {
         let data = null; try { data = JSON.parse(text); } catch (err) { /* not JSON: diagnosed below */ }
         return { res, data, raw: text };
@@ -265,13 +269,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!sel) return;
       const form = sel.closest('form');
       if (!form) return;
-      const u = new URL(form.action || location.href, location.href);
+      const u = new URL(form.getAttribute('action') || location.href, location.href);
       new FormData(form).forEach((v, k) => u.searchParams.set(k, v));
       loadShop(u.toString());
     });
     shopTools.addEventListener('submit', (e) => {
       e.preventDefault();
-      const u = new URL(shopTools.action || location.href, location.href);
+      const u = new URL(shopTools.getAttribute('action') || location.href, location.href);
       new FormData(shopTools).forEach((v, k) => u.searchParams.set(k, v));
       loadShop(u.toString());
     });
