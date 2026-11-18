@@ -47,11 +47,20 @@ function money(float|string $amount): string { global $config; return '₱' . nu
 // "was" price; NULL/absent means full price. Safe before the column exists.
 function sale_pct(array $product): int { $compare = (float) ($product['compare_price'] ?? 0); $price = (float) $product['price']; return ($compare > $price && $compare > 0) ? (int) round((1 - $price / $compare) * 100) : 0; }
 function csrf_token(): string { if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32)); return $_SESSION['csrf']; }
+// True for fetch() calls: the classic X-Requested-With header, or the
+// browser's own Fetch Metadata (Sec-Fetch-Mode), which shields and
+// extensions cannot strip. A plain form submit navigates instead, so it
+// must keep getting a redirect, not JSON.
+function is_ajax(): bool {
+    if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') return true;
+    $mode = $_SERVER['HTTP_SEC_FETCH_MODE'] ?? '';
+    return $mode === 'same-origin' || $mode === 'cors';
+}
 function verify_csrf(): void {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !hash_equals($_SESSION['csrf'] ?? '', $_POST['csrf'] ?? '')) {
         // AJAX callers (add to cart) get JSON so the script can show the
         // message instead of falling back to a full-page reload.
-        if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') {
+        if (is_ajax()) {
             while (ob_get_level() > 0) ob_end_clean();
             http_response_code(403); header('Content-Type: application/json');
             echo json_encode(['ok' => false, 'message' => 'Session expired — refresh the page and try again.']);

@@ -6,7 +6,7 @@ ob_start();
 require_once __DIR__ . '/includes/bootstrap.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf(); $action = $_POST['action'] ?? ''; $id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
-    $ajax = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest';
+    $ajax = is_ajax();
     $json = function (array $data, int $code = 200): void { while (ob_get_level() > 0) ob_end_clean(); http_response_code($code); header('Content-Type: application/json'); echo json_encode($data); exit; };
     if ($action === 'clear') { $_SESSION['cart'] = []; flash('Your cart is now empty.'); header('Location: ' . app_url('/cart.php')); exit; }
     $stmt = $pdo->prepare('SELECT id, stock FROM products WHERE id = ?'); $stmt->execute([$id ?: 0]); $product = $stmt->fetch();

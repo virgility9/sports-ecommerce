@@ -32,14 +32,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn.disabled) return;
     btn.disabled = true;
     fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-      .then((res) => res.json().catch(() => null).then((data) => ({ res, data })))
-      .then(({ res, data }) => {
+      .then((res) => res.text().then((text) => {
+        let data = null; try { data = JSON.parse(text); } catch (err) { /* not JSON: diagnosed below */ }
+        return { res, data, raw: text };
+      }))
+      .then(({ res, data, raw }) => {
         btn.disabled = false;
         if (!data || !data.ok) {
           // Expired session: the only remedy is a fresh page (fresh token),
           // so refresh instead of leaving a dead toast behind.
           if (res.status === 403) { showToast('Session expired — refreshing the page…'); setTimeout(() => location.reload(), 1200); return; }
-          showToast((data && data.message) || ('Could not add that item. (HTTP ' + res.status + ')')); return;
+          if (data && data.message) { showToast(data.message); return; }
+          // Unparseable reply: show where it actually came from and what it
+          // starts with, so the cause is visible instead of a dead end.
+          console.log('Add to cart failed:', res.status, res.url, raw);
+          const preview = (raw || '').replace(/\s+/g, ' ').slice(0, 100);
+          showToast('Could not add that item. (HTTP ' + res.status + ' @ ' + res.url + ') ' + preview); return;
         }
         const count = document.querySelector('.cart-count');
         if (count) count.textContent = data.count;
